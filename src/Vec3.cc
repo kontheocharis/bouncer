@@ -1,5 +1,6 @@
 #include "Vec3.hh"
 #include <cmath>
+#include <iostream>
 
 namespace bcr
 {
@@ -91,6 +92,12 @@ Vec3& Vec3::operator*= (double a)
     this->z *= a;
 
     return *this;
+}
+
+std::ostream& operator<< (std::ostream& out, const Vec3& v)
+{
+    out << "[" << v.x << ", " << v.y << ", " << v.z << "]";
+    return out;
 }
 
 } /* bcr */
