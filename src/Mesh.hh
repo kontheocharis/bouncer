@@ -1,7 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "Vec3.hh"
+#include "Vec.hh"
 #include <vector>
 #include <array>
 #include <memory>
@@ -15,39 +15,40 @@ struct Face;
 struct Vertex
 {
     Vec3 position;
-    std::vector<std::unique_ptr<Face>> faces;
+
+    Vertex(Vec3 position) : position(position) {};
+
+    std::vector<std::shared_ptr<Face>> faces;
 };
 
 struct Face
 {
-    std::array<std::unique_ptr<Vertex>, 3> vertices;
+    std::array<std::shared_ptr<Vertex>, 3> vertices;
 };
 
 class Mesh
 {
     public:
-        Mesh();
-
-        void set_geometry(
-                std::vector<std::array<double, 3>>& vertices,
-                std::vector<std::array<int, 3>>& faces);
-
-        void set_geometry(
-                std::vector<Vec3>& vertices,
-                std::vector<std::array<int, 3>>& faces);
+        Mesh(const std::vector<Vec3>& vertices, const std::vector<std::array<int, 3>>& faces);
 
         template<typename T>
-        std::vector<T> map_faces(std::function<T(Face&)>) const;
+        std::vector<T> map_faces(const std::function<T(Face&)>&) const;
+
+        void map_faces(const std::function<void(Face&)>&) const;
 
         template<typename T>
-        std::vector<T> map_vertices(std::function<T(Vertex&)>) const;
+        std::vector<T> map_vertices(const std::function<T(Vertex&)>&) const;
 
-        virtual ~Mesh() {  };
+        void map_vertices(const std::function<void(Vertex&)>&) const;
+
+        // Streaming
+        friend std::ostream& operator<< (std::ostream& out, const Mesh& v); 
 
     private:
-        std::vector<Face> m_faces;
-        std::vector<Vertex> m_vertices;
+        std::vector<std::shared_ptr<Face>> m_faces;
+        std::vector<std::shared_ptr<Vertex>> m_vertices;
 };
 
 }
+
 #endif /* MESH_H */

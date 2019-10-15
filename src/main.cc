@@ -1,18 +1,34 @@
 #include <iostream>
-#include "Vec3.hh"
 
+#include "Matrix.hh"
+#include "Vec.hh"
+/* #include "Mesh.hh" */
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    bcr::Vec3 v1(13, 1.44, 37);
-    bcr::Vec3 v2(0.42, 13, 1.01);
+    /* bcr::Vec2 v0 = {3, 7}; */
+    /* bcr::Vec2 v1 = {4, 2}; */
 
-    v1.normalize();
+    /* bcr::Mesh my_mesh( */ 
+    /*         { bcr::Vec3 {0, 0, 0}, bcr::Vec3 {1,1,0}, bcr::Vec3 {1, 0, 1}, bcr::Vec3 {0,0.5,0.5} }, */
+    /*         { {0, 1, 2}, {0, 1, 3} } */
+    /*     ); */
 
-    auto v3 = v2.cross(v1) + v1;
+    bcr::Matrix<3,3> my_mat({{
+        {1, 3, 5},
+        {6, 5, 2},
+        {0, 1, 33},
+    }});
 
-    std::cout << v1 << "\n" << v2 << "\n";
+    bcr::Vec3 my_vector = { 1, 1, 1 };
 
-    std::cout << v3.dot(-v2 * 2) << "\n";
+    std::cout << my_mat*my_vector << '\n';
+
+    /* my_mesh.map_faces([](bcr::Face& face) -> void { */
+    /*         std::cout << face.vertices[0]->position << "\n"; */
+    /*         std::cout << face.vertices[1]->position << "\n"; */
+    /*         std::cout << face.vertices[2]->position << "\n"; */
+    /*     }); */
+
     return 0;
 }
