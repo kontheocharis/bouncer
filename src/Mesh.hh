@@ -1,7 +1,8 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "Vec.hh"
+#include "Geometry.hh"
+
 #include <vector>
 #include <array>
 #include <memory>
@@ -28,25 +29,25 @@ struct Face
 
 class Mesh
 {
-    public:
-        Mesh(const std::vector<Vec3>& vertices, const std::vector<std::array<int, 3>>& faces);
+public:
+    Mesh(const std::vector<Vec3>& vertices, const std::vector<std::array<int, 3>>& faces);
 
-        template<typename T>
-        std::vector<T> map_faces(const std::function<T(Face&)>&) const;
+    template<typename T>
+    std::vector<T> map_faces(const std::function<T(const Face&)>&) const;
 
-        void map_faces(const std::function<void(Face&)>&) const;
+    void map_faces(const std::function<void(const Face&)>&) const;
 
-        template<typename T>
-        std::vector<T> map_vertices(const std::function<T(Vertex&)>&) const;
+    template<typename T>
+    std::vector<T> map_vertices(const std::function<T(const Vertex&)>&) const;
 
-        void map_vertices(const std::function<void(Vertex&)>&) const;
+    void map_vertices(const std::function<void(const Vertex&)>&) const;
 
-        // Streaming
-        friend std::ostream& operator<< (std::ostream& out, const Mesh& v); 
+    // Streaming
+    friend std::ostream& operator<< (std::ostream& out, const Mesh& v); 
 
-    private:
-        std::vector<std::shared_ptr<Face>> m_faces;
-        std::vector<std::shared_ptr<Vertex>> m_vertices;
+private:
+    std::vector<std::shared_ptr<Face>> m_faces;
+    std::vector<std::shared_ptr<Vertex>> m_vertices;
 };
 
 }

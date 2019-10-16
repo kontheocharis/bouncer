@@ -1,4 +1,5 @@
 #include "Mesh.hh"
+#include "Geometry.hh"
 #include <vector>
 #include <array>
 #include <stdexcept>
@@ -49,7 +50,7 @@ Mesh::Mesh(
 }
 
 template<typename T>
-std::vector<T> Mesh::map_faces(const std::function<T(Face&)>& func) const
+std::vector<T> Mesh::map_faces(const std::function<T(const Face&)>& func) const
 {
     std::vector<T> vals;
     for (auto p_face : m_faces) {
@@ -58,7 +59,7 @@ std::vector<T> Mesh::map_faces(const std::function<T(Face&)>& func) const
     return vals;
 }
 
-void Mesh::map_faces(const std::function<void(Face&)>& func) const
+void Mesh::map_faces(const std::function<void(const Face&)>& func) const
 {
     for (auto p_face : m_faces) {
         func(*p_face);
@@ -66,7 +67,7 @@ void Mesh::map_faces(const std::function<void(Face&)>& func) const
 }
 
 template<typename T>
-std::vector<T> Mesh::map_vertices(const std::function<T(Vertex&)>& func) const
+std::vector<T> Mesh::map_vertices(const std::function<T(const Vertex&)>& func) const
 {
     std::vector<T> vals;
     for (auto p_vertex : m_vertices) {
@@ -75,7 +76,7 @@ std::vector<T> Mesh::map_vertices(const std::function<T(Vertex&)>& func) const
     return vals;
 }
 
-void Mesh::map_vertices(const std::function<void(Vertex&)>& func) const
+void Mesh::map_vertices(const std::function<void(const Vertex&)>& func) const
 {
     for (auto p_vertex : m_vertices) {
         func(*p_vertex);
