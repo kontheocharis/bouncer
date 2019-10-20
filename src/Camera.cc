@@ -6,12 +6,12 @@
 namespace bcr
 {
 
-Camera::Camera(const CameraSettings& settings) : Object(settings.transform)
+Camera::Camera(const CameraSettings settings) : Object(settings.transform)
 {
     this->set_settings(settings);
 }
 
-void Camera::set_settings(const CameraSettings& settings)
+void Camera::set_settings(const CameraSettings settings)
 {
     m_focal_length = settings.focal_length;
     m_field_of_view = M_PI * settings.field_of_view / 180;

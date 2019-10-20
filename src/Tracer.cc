@@ -59,4 +59,9 @@ ColorRGB Tracer::calculate_diffuse(const Tracer::BrdfParameters& params, const M
         * (1 + (fresnel - 1) * pow(1 - params.cos_theta_view, 5));
 }
 
+ColorRGB Tracer::calculate_specular(const BrdfParameters&, const Material&) const
+{
+    return ColorRGB::white();
+}
+
 } /* bcr */ 

@@ -7,6 +7,7 @@
 #include "Material.hh"
 
 #include <vector>
+#include <memory>
 
 namespace bcr
 {
@@ -15,11 +16,12 @@ namespace bcr
 class Tracer
 {
 public:
-    Tracer(const Scene& scene, const Camera& camera) : m_scene(scene), m_camera(camera) {};
+    Tracer(const Scene* scene, const Camera* camera)
+        : m_camera(std::shared_ptr<const Camera>(camera)), m_scene(std::shared_ptr<const Scene>(scene)) {  };
 
-    std::vector<ColorRGB> capture() const;
-
+    std::vector<ColorRGB> trace() const;
 private:
+
     struct BrdfParameters
     {
         Vec3 view_vector;
@@ -34,10 +36,18 @@ private:
         double cos_theta_d; // Angle between light vector (or view vector) and half-vector
     };
 
-    const Scene& m_scene;
-    const Camera& m_camera;
+    std::weak_ptr<const Scene> m_scene;
+    std::weak_ptr<const Camera> m_camera;
 
     ColorRGB trace_ray(const Ray3&) const;
+
+    ColorRGB calculate_diffuse(const BrdfParameters&, const Material&) const;
+
+    ColorRGB calculate_specular(const BrdfParameters&, const Material&) const;
+
+    ColorRGB calculate_sheen(const BrdfParameters&) const;
+
+    ColorRGB calculate_albedo_tint(const ColorRGB& color) const;
 
     ColorRGB compute_brdf(
             const Vec3& view_vector,
@@ -45,13 +55,6 @@ private:
             const Vec3& normal_vector,
             const Material& material) const;
 
-    ColorRGB calculate_albedo_tint(const ColorRGB& color) const;
-
-    ColorRGB calculate_diffuse(const BrdfParameters&, const Material&) const;
-
-    ColorRGB calculate_specular(const BrdfParameters&, const Material&) const;
-
-    ColorRGB calculate_sheen(const BrdfParameters&) const;
 };
 
 } /* bcr */

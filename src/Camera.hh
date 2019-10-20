@@ -4,7 +4,6 @@
 #include "Geometry.hh"
 #include "Object.hh"
 #include "Material.hh"
-#include "Tracer.hh"
 
 #include <cmath>
 
@@ -13,22 +12,23 @@ namespace bcr
 
 struct CameraSettings
 {
-    const Transform transform;
-    const double focal_length;
-    const double field_of_view;
-    const double pixel_width;
-    const double pixel_height;
+    double pixel_width;
+    double pixel_height;
+
+    Transform transform = Transform::Identity();
+    double focal_length = 1.0;
+    double field_of_view = 60;
 };
 
 class Camera : public Object
 {
 public:
 
-    Camera(const CameraSettings& settings);
+    Camera(const CameraSettings settings);
 
     void reset_transform();
     void apply_transform(const Transform&);
-    void set_settings(const CameraSettings&);
+    void set_settings(const CameraSettings);
 
 private:
     Vec3 m_position;
