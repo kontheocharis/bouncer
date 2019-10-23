@@ -1,15 +1,13 @@
-#include "Mesh.hh"
-#include "Geometry.hh"
+#include "mesh.hh"
+#include "base.hh"
+
 #include <vector>
 #include <array>
 #include <stdexcept>
 #include <iostream>
 
-namespace bcr
-{
-
 Mesh::Mesh(
-        const std::vector<Vec3>& vertices,
+        const std::vector<v3>& vertices,
         const std::vector<std::array<int, 3>>& faces)
 {
     // Each face is made of 3 vertices, so the whole thing must be divisible by 3
@@ -48,39 +46,3 @@ Mesh::Mesh(
     this->m_faces = std::move(temp_faces);
     this->m_vertices = std::move(temp_vertices);
 }
-
-template<typename T>
-std::vector<T> Mesh::map_faces(const std::function<T(const Face&)>& func) const
-{
-    std::vector<T> vals;
-    for (auto p_face : m_faces) {
-        vals.push_back(func(*p_face));
-    }
-    return vals;
-}
-
-void Mesh::map_faces(const std::function<void(const Face&)>& func) const
-{
-    for (auto p_face : m_faces) {
-        func(*p_face);
-    }
-}
-
-template<typename T>
-std::vector<T> Mesh::map_vertices(const std::function<T(const Vertex&)>& func) const
-{
-    std::vector<T> vals;
-    for (auto p_vertex : m_vertices) {
-        vals.push_back(func(*p_vertex));
-    }
-    return vals;
-}
-
-void Mesh::map_vertices(const std::function<void(const Vertex&)>& func) const
-{
-    for (auto p_vertex : m_vertices) {
-        func(*p_vertex);
-    }
-}
-
-};
